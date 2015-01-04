@@ -18,7 +18,7 @@ public class Coin {
 		NodeState state = NodeState.TBD;
 	}
 	private static int[] COINS = {2,9,10};
-	private static int COUNT = 15;
+	private static int COUNT = 4;
 	private Map<Integer,dpNode> nodes= new HashMap<Integer,dpNode>();
 	
 	public static void main(String[] args) {
@@ -32,7 +32,7 @@ public class Coin {
 		}
 		else
 		{
-			System.out.println("Value " + COUNT + " can be aggragrated by " + node.coinCount + " coins.\n" +
+			System.out.println("Value " + COUNT + " can be aggregrated by " + node.coinCount + " coins.\n" +
 					"One of the layout is\n");
 			while(node != null)
 			{
