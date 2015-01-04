@@ -19,8 +19,8 @@ public class Coin2 {
 		dpNode prevNode = null;
 		NodeState state = NodeState.TBD;
 	}
-	private static int[] COINS = {2,5,19,20,58,1004};
-	private static int COUNT = 15580;
+	private static int[] COINS = {2,5,20,1004,58,19};
+	private static int COUNT = 155802;
 	private Map<Integer,dpNode> nodes= new HashMap<Integer,dpNode>();
 	
 	public static void main(String[] args) {
