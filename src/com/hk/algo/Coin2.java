@@ -3,7 +3,7 @@ package com.hk.algo;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Coin {
+public class Coin2 {
 
 	enum NodeState{
 		NA,
@@ -18,12 +18,12 @@ public class Coin {
 		NodeState state = NodeState.TBD;
 	}
 	private static int[] COINS = {2,5,10,20,50,100};
-	private static int COUNT = 1558;
+	private static int COUNT = 15580;
 	private Map<Integer,dpNode> nodes= new HashMap<Integer,dpNode>();
 	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		Coin program = new Coin();
+		Coin2 program = new Coin2();
 		program.init();
 		dpNode node = program.cal(COUNT);
 		if(node.state == NodeState.NA)
@@ -48,63 +48,71 @@ public class Coin {
 		
 	}
 	
-	private dpNode cal(int val)
+	private dpNode cal(int maxVal)
 	{
-		dpNode curNode = new dpNode();
-		dpNode minNode = null;
-		for(int i: COINS)
+		dpNode curNode = null;
+		for(int val =1;val<=maxVal;val++)
 		{
-			int subVal = val-i;
-			if(subVal>0)
+			curNode = new dpNode();
+			dpNode minNode = null;
+		
+			boolean singleMatch = false;
+			for(int i: COINS)
 			{
-				dpNode node = nodes.get(subVal);
-				if(node == null)
+				int subVal = val-i;
+				if(subVal>0)
 				{
-					node = cal(subVal);
-				}
-				if(node.state != NodeState.NA)
-				{
-					if(minNode ==null)
+					dpNode node = nodes.get(subVal);
+					if(node != null)
 					{
-						minNode = node;
-					}
-					else
-					{
-						if(minNode.coinCount>node.coinCount)
+						if(node.state != NodeState.NA)
 						{
-							minNode = node;
+							if(minNode ==null)
+							{
+								minNode = node;
+							}
+							else
+							{
+								if(minNode.coinCount>node.coinCount)
+								{
+									minNode = node;
+								}
+							}
 						}
 					}
 				}
+				else if(subVal == 0)
+				{
+					curNode = new dpNode();
+					curNode.sumVal = val;
+					curNode.prevNode = null;
+					curNode.coinVal = val;
+					curNode.coinCount = 1;
+					curNode.state = NodeState.GET;
+					nodes.put(val, curNode);
+					singleMatch = true;
+				}
+	
 			}
-			else if(subVal ==0)
+			
+			if(!singleMatch)
 			{
-				curNode = new dpNode();
-				curNode.sumVal = val;
-				curNode.prevNode = null;
-				curNode.coinVal = val;
-				curNode.coinCount = 1;
-				curNode.state = NodeState.GET;
+				if(minNode != null)
+				{
+					curNode.sumVal = val;
+					curNode.prevNode = minNode;
+					curNode.coinVal = val - minNode.sumVal;
+					curNode.coinCount = minNode.coinCount +1;
+					curNode.state = NodeState.GET;
+				}
+				else
+				{
+					curNode.state = NodeState.NA;
+				}
 				nodes.put(val, curNode);
-				return curNode;
 			}
+		}
 
-		}
-		
-		if(minNode != null)
-		{
-			curNode.sumVal = val;
-			curNode.prevNode = minNode;
-			curNode.coinVal = val - minNode.sumVal;
-			curNode.coinCount = minNode.coinCount +1;
-			curNode.state = NodeState.GET;
-		}
-		else
-		{
-			curNode.state = NodeState.NA;
-		}
-		
-		nodes.put(val, curNode);
 		return curNode;
 	}
 	
