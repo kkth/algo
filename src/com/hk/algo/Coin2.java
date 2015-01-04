@@ -2,6 +2,8 @@ package com.hk.algo;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class Coin2 {
 
@@ -17,7 +19,7 @@ public class Coin2 {
 		dpNode prevNode = null;
 		NodeState state = NodeState.TBD;
 	}
-	private static int[] COINS = {2,5,10,20,50,100};
+	private static int[] COINS = {2,5,19,20,58,1004};
 	private static int COUNT = 15580;
 	private Map<Integer,dpNode> nodes= new HashMap<Integer,dpNode>();
 	
@@ -34,10 +36,31 @@ public class Coin2 {
 		{
 			System.out.println("Value " + COUNT + " can be aggregrated by " + node.coinCount + " coins.\n" +
 					"One of the layout is\n");
+			Map<Integer,Integer> coinsMap = new HashMap<Integer,Integer>();
 			while(node != null)
 			{
-				System.out.println("Coin value : " + node.coinVal + ". Count: 1");
+				//System.out.println("Coin value : " + node.coinVal + ". Count: 1");
+				//node = node.prevNode;
+				Integer coinCount = coinsMap.get(node.coinVal);
+				if(coinCount ==null)
+				{
+					coinsMap.put(node.coinVal, 1);
+				}
+				else
+				{
+					coinsMap.put(node.coinVal, coinCount+1);
+				}
 				node = node.prevNode;
+			}
+			
+			Set<Integer> keysets = coinsMap.keySet();
+			TreeSet<Integer> sortedset = new TreeSet<Integer>(keysets);
+			for(Integer val:sortedset)
+			{
+				if(val != 0)
+				{
+					System.out.println("Coin value : " + val + ". Count: " + coinsMap.get(val) );
+				}
 			}
 		}
 		
